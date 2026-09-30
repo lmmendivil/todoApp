@@ -2,6 +2,12 @@ import { signUp, confirmSignUp, resendSignUpCode } from 'aws-amplify/auth';
 import { config } from './config';
 import * as mockApi from './mockApi';
 
+import { Amplify } from 'aws-amplify';
+import awsconfig from './aws-config';
+Amplify.configure(awsconfig);
+
+
+
 const IS_MOCK = config.isMock; // Toggle this to switch between mock and real API
 
 // Real API implementation using Amplify Auth
@@ -65,6 +71,7 @@ const realApi = {
 
   async getTodos(token: string) {  
     // TO IMPLEMENT
+    return [];
   },
 
   async createTodo(token: string, title: string) {

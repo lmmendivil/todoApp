@@ -16,7 +16,7 @@ const getConfig = (): Config => {
     isMock,
     userPoolId,
     userPoolClientId,
-    identityPoolId,
+    identityPoolId
   };
 };
 
