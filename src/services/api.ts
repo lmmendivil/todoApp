@@ -1,4 +1,4 @@
-import { signUp, confirmSignUp, resendSignUpCode } from 'aws-amplify/auth';
+import { signUp, confirmSignUp, resendSignUpCode, signIn, fetchAuthSession, getCurrentUser } from 'aws-amplify/auth';
 import { config } from './config';
 import * as mockApi from './mockApi';
 
@@ -14,7 +14,27 @@ const IS_MOCK = config.isMock; // Toggle this to switch between mock and real AP
 const realApi = {
   async loginUser(email: string, password: string) {
 
-    // TO IMPLEMENT
+    try {
+      await signIn({ username: email, password });
+      const session = await fetchAuthSession();
+      const user = await getCurrentUser();
+
+      return {
+        user: {
+          
+          id: user.userId,
+          email: user.username,
+          name: user.signInDetails?.loginId || email,
+          verified: true, 
+        },
+        token: session.tokens?.idToken?.toString(),
+      };
+    } catch (error: any) {
+      if (error.name === 'UserNotConfirmedException') {
+        throw new Error('Please verify your email first');
+      }
+      throw new Error(error.message || 'Login failed');
+    }    
     
   },
 
